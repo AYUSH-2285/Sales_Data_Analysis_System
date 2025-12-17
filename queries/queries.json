@@ -1,0 +1,62 @@
+{
+  "monthly_sales": {
+    "description": "Total sales per month",
+    "sql": "SELECT DATE_FORMAT(order_date, '%Y-%m') AS month, SUM(total_amount) AS total_sales FROM sales GROUP BY month ORDER BY month",
+    "params": []
+  },
+  "top_products": {
+    "description": "Top selling products by quantity",
+    "sql": "SELECT p.product_name, SUM(s.quantity) AS total_units FROM sales s JOIN products p ON s.product_id = p.product_id GROUP BY p.product_name ORDER BY total_units DESC LIMIT %(limit)s",
+    "params": ["limit"]
+  },
+  "top_customers": {
+    "description": "Top customers by spending",
+    "sql": "SELECT c.customer_name, SUM(s.total_amount) AS total_spent FROM sales s JOIN customers c ON s.customer_id = c.customer_id GROUP BY c.customer_name ORDER BY total_spent DESC LIMIT %(limit)s",
+    "params": ["limit"]
+  },
+  "sales_by_city": {
+    "description": "Sales distribution by city",
+    "sql": "SELECT c.city, SUM(s.total_amount) AS total_sales, COUNT(s.order_id) AS order_count FROM sales s JOIN customers c ON s.customer_id = c.customer_id GROUP BY c.city ORDER BY total_sales DESC",
+    "params": []
+  },
+  "product_category_analysis": {
+    "description": "Revenue by product category",
+    "sql": "SELECT p.category, SUM(s.total_amount) AS total_revenue, SUM(s.quantity) AS total_units, AVG(p.price) AS avg_price FROM sales s JOIN products p ON s.product_id = p.product_id GROUP BY p.category ORDER BY total_revenue DESC",
+    "params": []
+  },
+  "daily_sales_trend": {
+    "description": "Daily sales trend over time",
+    "sql": "SELECT order_date, SUM(total_amount) AS sales_amount, COUNT(order_id) AS order_count FROM sales GROUP BY order_date ORDER BY order_date",
+    "params": []
+  },
+  "customer_purchase_frequency": {
+    "description": "Customer segments by purchase frequency",
+    "sql": "SELECT c.customer_id, c.customer_name, COUNT(s.order_id) AS purchase_count, SUM(s.total_amount) AS total_spent FROM sales s JOIN customers c ON s.customer_id = c.customer_id GROUP BY c.customer_id, c.customer_name ORDER BY purchase_count DESC",
+    "params": []
+  },
+  "product_revenue_ranking": {
+    "description": "Products ranked by revenue generation",
+    "sql": "SELECT p.product_name, SUM(s.total_amount) AS revenue, SUM(s.quantity) AS units_sold FROM sales s JOIN products p ON s.product_id = p.product_id GROUP BY p.product_name ORDER BY revenue DESC LIMIT %(limit)s",
+    "params": ["limit"]
+  },
+  "customer_segment_analysis": {
+    "description": "Segment customers by total spending",
+    "sql": "SELECT c.customer_id, c.customer_name, c.city, SUM(s.total_amount) AS total_spent, COUNT(s.order_id) AS order_count, AVG(s.total_amount) AS avg_order_value FROM sales s JOIN customers c ON s.customer_id = c.customer_id GROUP BY c.customer_id, c.customer_name, c.city ORDER BY total_spent DESC",
+    "params": []
+  },
+  "quarterly_sales_comparison": {
+    "description": "Quarterly sales comparison and growth",
+    "sql": "SELECT QUARTER(order_date) AS quarter, YEAR(order_date) AS year, SUM(total_amount) AS total_sales, COUNT(order_id) AS order_count FROM sales GROUP BY year, quarter ORDER BY year DESC, quarter DESC",
+    "params": []
+  },
+  "product_performance_metrics": {
+    "description": "Key performance metrics for all products",
+    "sql": "SELECT p.product_id, p.product_name, p.category, p.price, SUM(s.quantity) AS total_units_sold, SUM(s.total_amount) AS total_revenue, COUNT(DISTINCT s.customer_id) AS unique_customers FROM sales s JOIN products p ON s.product_id = p.product_id GROUP BY p.product_id ORDER BY total_revenue DESC",
+    "params": []
+  },
+  "customer_city_insights": {
+    "description": "Detailed customer and city insights",
+    "sql": "SELECT c.city, COUNT(DISTINCT c.customer_id) AS num_customers, COUNT(s.order_id) AS total_orders, SUM(s.total_amount) AS total_revenue, AVG(s.total_amount) AS avg_order_value FROM customers c LEFT JOIN sales s ON c.customer_id = s.customer_id GROUP BY c.city ORDER BY total_revenue DESC",
+    "params": []
+  }
+}

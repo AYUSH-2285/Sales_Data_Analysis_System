@@ -11,7 +11,7 @@ from pathlib import Path
 # ============================================
 DB_HOST = 'localhost'
 DB_USER = 'root'
-DB_PASSWORD = '0123'  # CHANGE THIS TO YOUR MYSQL PASSWORD
+DB_PASSWORD = 'root'  # CHANGE THIS TO YOUR MYSQL PASSWORD
 DB_NAME = 'sales_analytics'
 DB_PORT = 3306
 
